@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
-import { FlatList, ListRenderItem, StyleSheet, View } from 'react-native';
+import { FlatList, ListRenderItem, Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 import Animated from 'react-native-reanimated';
 
 type Item = {
@@ -36,14 +36,19 @@ const items: Item[] = [
 
 
 export default function TransitionHomeScreen() {
+  const router = useRouter();
+  const  navigate = useCallback((item: Item) => {
+    router.push(`/${item.tag}?image=${item.imageUrl}`);
+  }
+  , [router]);
   const renderItem = useCallback<ListRenderItem<Item>>(({ item }) => {
     return (
-      <Link href={`/${item.tag}?image=${item.imageUrl}`} style={{width:300}} >
+      <Pressable onPress={()=>{navigate(item)}} style={{width:300}} >
         <Animated.Image sharedTransitionTag={item.tag}  source={{ uri: item.imageUrl, cache: "force-cache" }} style={{ height: 200, borderRadius: 8, width:350}} />
         <View style={styles.stepContainer} >
           <ThemedText type="defaultSemiBold">{item.title}</ThemedText>
         </View>
-      </Link>
+      </Pressable>
     );
   }, []);
 
