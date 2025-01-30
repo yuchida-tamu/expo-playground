@@ -10,7 +10,6 @@ export default function TransitionDetailScreen() {
 const {tag, image} = useLocalSearchParams<{ tag: string, image: string }>();
   return (
     <View style={{padding:16, flex:1}}>
-      {/* <Animated.View sharedTransitionTag="test"  style={{ height: 400, borderRadius: 8, width:"100%",backgroundColor:"blue" }} /> */}
      <Animated.Image sharedTransitionTag={tag} source={{ uri: image }} style={{ height: 400, borderRadius: 8 }} />
      <ThemedText type="subtitle">{tag}</ThemedText>
     </View>
