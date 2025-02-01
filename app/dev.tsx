@@ -13,9 +13,9 @@ type LocationModuleEvents = {
 }
 
 declare class LocationModule extends NativeModule<LocationModuleEvents> {}
-const Locatio = requireNativeModule<LocationModule>('SignificantLocationChange');
+const LocationNativeModule = requireNativeModule<LocationModule>('SignificantLocationChange');
 
-Locatio.addListener<LocationModule>('onLocationUpdate', (event) => {
+LocationNativeModule.addListener('onLocationUpdate', (event) => {
   console.log(event);
 });
 
