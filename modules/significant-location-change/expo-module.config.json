@@ -1,0 +1,17 @@
+{
+  "platforms": [
+    "apple",
+    "android",
+    "web"
+  ],
+  "apple": {
+    "modules": [
+      "SignificantLocationChangeModule"
+    ]
+  },
+  "android": {
+    "modules": [
+      "expo.modules.significantlocationchange.SignificantLocationChangeModule"
+    ]
+  }
+}
