@@ -1,6 +1,8 @@
 import ExpoModulesCore
+import CoreLocation
 
 public class SignificantLocationChangeModule: Module {
+    private var locationManager: LocationManager?
   // Each module class must implement the definition function. The definition consists of components
   // that describes the module's functionality and behavior.
   // See https://docs.expo.dev/modules/module-api for more details about available components.
@@ -15,34 +17,71 @@ public class SignificantLocationChangeModule: Module {
       "PI": Double.pi
     ])
 
-    // Defines event names that the module can send to JavaScript.
-    Events("onChange")
+    Events("onLocationUpdate")
 
-    // Defines a JavaScript synchronous function that runs the native code on the JavaScript thread.
-    Function("hello") {
-      return "Hello world! 👋"
+      Function("requestPermission"){
+          print("request")
+          locationManager?.requestPermission();
+      }
+      
+      Function("startMonitoring"){
+          print("start")
+          locationManager?.startMonitoringSignificantLocationChanges(handler: locationUpdateListener)
+      }
+      
+      Function("stopMonitoring"){
+          print("stop")
+          locationManager?.stopMonitoringSignificantLocationChanges()
+      }
+      
+      OnCreate {
+          locationManager = LocationManager()
+      }
+
+  }
+    
+    private func locationUpdateListener(_ location: CLLocation) {
+        sendEvent("onLocationUpdate", [
+            "longitude": location.coordinate.longitude,
+            "latitude": location.coordinate.latitude
+        ])
     }
+    
+}
 
-    // Defines a JavaScript function that always returns a Promise and whose native code
-    // is by default dispatched on the different thread than the JavaScript runtime runs on.
-    AsyncFunction("setValueAsync") { (value: String) in
-      // Send an event to JavaScript.
-      self.sendEvent("onChange", [
-        "value": value
-      ])
-    }
 
-    // Enables the module to be used as a native view. Definition components that are accepted as part of the
-    // view definition: Prop, Events.
-    View(SignificantLocationChangeView.self) {
-      // Defines a setter for the `url` prop.
-      Prop("url") { (view: SignificantLocationChangeView, url: URL) in
-        if view.webView.url != url {
-          view.webView.load(URLRequest(url: url))
+
+class LocationManager:NSObject, CLLocationManagerDelegate {
+    private let locationManager = CLLocationManager()
+    public var sendEvent: ((CLLocation) -> Void)?
+    
+    public func startMonitoringSignificantLocationChanges(handler: @escaping (CLLocation) -> Void) {
+        print("locationManager: start")
+        if CLLocationManager.significantLocationChangeMonitoringAvailable() {
+            print("locationManager: authorized")
+            sendEvent = handler
+          locationManager.startMonitoringSignificantLocationChanges()
         }
       }
 
-      Events("onLoad")
+      public func stopMonitoringSignificantLocationChanges() {
+        locationManager.stopMonitoringSignificantLocationChanges()
+      }
+    
+    public func requestPermission(){
+        print("locationManager: request")
+        locationManager.requestAlwaysAuthorization()
     }
-  }
+    
+    override init() {
+        super.init()
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+    }
+    
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        sendEvent?(location)
+    }
+
 }

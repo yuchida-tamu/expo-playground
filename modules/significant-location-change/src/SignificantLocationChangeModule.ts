@@ -6,6 +6,9 @@ declare class SignificantLocationChangeModule extends NativeModule<SignificantLo
   PI: number;
   hello(): string;
   setValueAsync(value: string): Promise<void>;
+  requestPermission(): void;
+  startMonitoring(): void;
+  stopMonitoring(): void;
 }
 
 // This call loads the native module object from the JSI.
