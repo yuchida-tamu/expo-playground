@@ -28,10 +28,12 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme} >
+      <Stack >
         <Stack.Screen name="index"/>
         <Stack.Screen name="[tag]"/>
+        <Stack.Screen name="transition"/>
+        <Stack.Screen name="dev"/>
         </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>
