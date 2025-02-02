@@ -10,8 +10,9 @@ export default function HomeScreen() {
 
   return (
     <View style={{padding:16, flex:1}}>
-      <Button title="Go to Debug" onPress={() => router.push('/debug')} />
-        <Button title="Go to Transition" onPress={() => router.push('/transition')} />
+      <Button title="Go to Debug" onPress={() => router.push('/dev')} />
+      <Button title="Go to Transition" onPress={() => router.push('/transition')} />
+      <Button title="Go to Carousel" onPress={() => router.push('/carousel')} />
     </View>
   );
 }
