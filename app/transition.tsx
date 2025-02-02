@@ -70,7 +70,7 @@ export default function TransitionHomeScreen() {
     );
   }, []);
 
-  const keyExtractor = useCallback((item: Item) => item.title, []);
+  const keyExtractor = useCallback((item: Item, index: number) => item.tag, []);
 
   return (
     <View style={{padding:16, flex:1}}>
