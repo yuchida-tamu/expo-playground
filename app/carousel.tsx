@@ -31,21 +31,27 @@ const data = [
   },
 ] as const satisfies CarouselItem[];
 
+const Card = ({item}: {item: CarouselItem}) => {
+  return (
+    <View style={[styles.cardContainer, styles.shadow]}>
+      <Image source={{uri: item.image}} style={styles.cardThumbnail} />
+      <View style={styles.cardBodyContainer}>
+        <Text style={styles.cardTitle}>{item.title}</Text>
+        <View style={styles.cardLabeledTextContainer}>
+          <Ionicons name="heart" size={14} color="pink" />
+          <Text style={styles.cardDescription}>{item.rating}</Text>
+        </View>
+      </View>
+    </View>
+  );
+}
+
 export default function CarouselScreen() {
   return (
     <View style={styles.container}>
-      <Text>Carousel Screen</Text>
-
-      <View style={[styles.cardContainer, styles.shadow]}>
-        <Image source={{uri: data[0].image}} style={styles.cardThumbnail} />
-        <View style={styles.cardBodyContainer}>
-          <Text style={styles.cardTitle}>{data[0].title}</Text>
-          <View style={styles.cardLabeledTextContainer}>
-            <Ionicons name="heart" size={14} color="pink" />
-            <Text style={styles.cardDescription}>{data[0].rating}</Text>
-          </View>
-        </View>
-      </View>
+     
+      <Card item={data[0]} />
+      
     </View>
   );
 }
